@@ -2,10 +2,12 @@ body ul{
 	margin: 0;
 	padding: 0;
 }
-.slider{
-	width: 1150px;
+.wrapper{
+	width: 1280px;
 	margin: 0 auto;
-	overflow: hidden;
+}
+.slider{
+	margin-bottom: 20px;
 }
 .images-panel{
 	float: left;
@@ -13,17 +15,8 @@ body ul{
 	border: 0 solid silver;
 	border-width: 0 0 1px 1px;
 	box-sizing: border-box;
-	position: relative;
 }
-/*.images-panel:before{
-	content: '';
-	position: absolute;
-	top:109px;
-	left: 240px;
-	border: 20px solid transparent;
-	border-left: 20px solid green;
-	display: none;
-}*/
+
 .images-panel li{
 	list-style-type:none;
 	width: 100%;
@@ -31,38 +24,31 @@ body ul{
 	border: 0 solid silver;
 	border-width: 1px 0 0 0;
 	box-sizing: border-box;
-	/*position: relative;*/
 }
-.image-5{
-	width: 100%;
+.active-image{
+	width: 240px;
 	height: 86.4px;
 	background-color: orange;
-	/*display: none;*/
 	position: absolute;
 	top:0;
+	border:none;
 
 }
 .triangle{
 	position: absolute;
-	top:23px;
 	left: 239px;
-	border: 20px solid transparent;
-	border-left: 20px solid orange;
-/*	display: none;*/
+	border: solid transparent;
+	border-left: solid orange;
+	box-sizing: border-box;
 }
 .slider-image{
 	float: left;
-	width: 910px;
 	border: 0 solid silver;
 	border-width: 1px 1px 1px 0;
 	box-sizing: border-box;
 	overflow: hidden;
-	/*position: relative;*/
 }
 img{
 	float: left;
 }
-.image{
-	width: 3640px;
-	/*position: relative;*/
-}
+

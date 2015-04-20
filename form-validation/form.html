@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Форма с валидацией</title>
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+	<div class="container">
+		<h1>Форма сбора данных</h1>
+		<form role="form">
+			
+			<div class="form-group required">
+				<label class="control-label" for="emailField">Почта (будет использована как логин)<sup>*</sup></label>
+				<input class="form-control" id="emailField" placeholder="Почта" type="text">
+				<div class="alert alert-danger"></div>
+			</div>
+
+			<div class="form-group required">
+				<label class="control-label" for="passwordField">Пароль (постарайся придумать посложнее)<sup>*</sup></label>
+				<input class="form-control pas" id="passwordField" placeholder="Пароль" type="password">
+				<div class="alert alert-danger"></div>
+			</div>
+
+			<div class="form-group">
+				<label for="cityField">Город проживания (указывать не обязательно)</label>
+				<input class="form-control" id="cityField" placeholder="Город" type="text">
+			</div>
+
+			<div class="form-group">
+				<label class="control-label" for="phoneField">Телефон (указывать не обязательно)</label>
+				<input class="form-control" id="phoneField" placeholder="Номер телефона в международном формате например +380XXXXXXXXX" type="text">
+				<div class="alert alert-danger"></div>
+			</div>
+
+			<div class="form-group required">
+				<div class="checkbox">
+					<label class="control-label" for="checkboxField">
+						<input type="checkbox" id="checkboxField"> Я принимаю <a href="/">условия использования</a>
+					</label>
+					<div class="alert alert-danger"></div>
+				</div>
+			</div>
+
+			<div class="form-group buttonBox">
+				<button type="submit" disabled class="btn btn-primary">Отправить данные</button>
+				<div class="alert alert-danger"></div>
+			</div>
+
+		</form>
+	</div>
+	<script src="js/validate.js"></script>
+</body>
+</html>
