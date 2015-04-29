@@ -1,14 +1,12 @@
 (function() {
-	'use strict'
-
-	// For demonstration purposes, when checking for an existing e-mail
-	var registredMail = ['author@mail.com', 'foo@mail.com', 'tester@mail.com']
+	"use strict";
 
 	function ValidationForm() {
 		this.validEmail = false;
 		this.validPass = false;
 		this.validPhone = true;
 		this.validCheckbox = false;
+		
 
 		// Variables for method validation email
 		this.emailInput = {
@@ -65,7 +63,7 @@
 			messages: {
 				required: 'Заполните все поля помеченные *'
 			}
-		}
+		};
 
 		this.bindEventsHandlers();
 	}
@@ -74,7 +72,6 @@
 	ValidationForm.prototype.emailValidation = function(event) {
 		var validMail = /(^[a-z0-9][\S\w]+)@([a-z]+)\.([a-z]+$)/; //pattern for e-mail
 		var errorMessage;
-
 		// Check the correctness of input e-mail
 		if (!validMail.test(this.emailInput.element.value) && this.emailInput.element.value.length) {
 			errorMessage = this.emailInput.messages.pattern;
@@ -84,16 +81,6 @@
 			errorMessage = this.emailInput.messages.required;
 		}
 
-		// Checking for existing e-mail
-		if (!errorMessage) {
-			for (var i = 0; i < registredMail.length; i += 1) {
-				if (registredMail[i] === this.emailInput.element.value) {
-					errorMessage = this.emailInput.messages.unique(this.emailInput.element.value);
-					break;
-				}
-			}
-		}
-
 		if (errorMessage) {
 			this.showErrorMessage(this.emailInput, errorMessage, 'validEmail');
 		} else {
@@ -101,12 +88,36 @@
 		}
 
 		this.buttonValidation();
-	}
+	};
 
-	// Method validation password
+
+
+	// Checking for existing e-mail
+	ValidationForm.prototype.emailServerValidation = function(event) {
+		var errorMessage;
+		var xhr = new XMLHttpRequest();
+		xhr.open('GET', 'https://aqueous-reaches-8130.herokuapp.com/check-email/?email=' + this.emailInput.element.value, true);
+		xhr.onreadystatechange = function() {
+			var JSONParseResponseText;
+			if (xhr.readyState === 4) {
+				JSONParseResponseText = JSON.parse(xhr.responseText);
+				if (!JSONParseResponseText.used) {
+					this.hideErrorMessage(this.emailInput, 'validEmail');
+				} else {
+					errorMessage = this.emailInput.messages.unique(this.emailInput.element.value);
+					console.log(errorMessage);
+					this.showErrorMessage(this.emailInput, errorMessage, 'validEmail');
+				}
+			}
+		}.bind(this);
+		xhr.send();
+
+	};
+
+	//Method validation password
 	ValidationForm.prototype.passwordValidation = function(event) {
 		var errorMessage;
-		var validPassword = new RegExp("[^a-zA-Z0-9_\-]+"); //pattern for Password
+		var validPassword = /[^a-zA-Z0-9_\-]+/; //pattern for password
 		var numbers = /\d+/; //pattern for number
 		var letters = /[a-zA-z]+/; //pattern for letters
 		var passwordCharacters = /[_\-]+/; // pattern for symbols
@@ -128,7 +139,7 @@
 		}
 
 		this.buttonValidation();
-	}
+	};
 
 	// Method validation phone number
 	ValidationForm.prototype.telephoneNumberValidation = function(event) {
@@ -141,7 +152,7 @@
 			this.hideErrorMessage(this.phoneInput, 'validPhone');
 		}
 		this.buttonValidation();
-	}
+	};
 
 	//  Method validation checkbox
 	ValidationForm.prototype.checkboxValidation = function(event) {
@@ -153,12 +164,12 @@
 			this.hideErrorMessage(this.checkboxInput, 'validCheckbox');
 		}
 		this.buttonValidation();
-	}
+	};
 
 	// Checks the presence of error of received HTML element
 	ValidationForm.prototype.hasError = function(element) {
 		return element.className.split(' ').indexOf('has-error') !== -1;
-	}
+	};
 
 	// Method to display the error message
 	ValidationForm.prototype.showErrorMessage = function(domElement, messageText, validField) {
@@ -168,24 +179,24 @@
 			this.dangerStyle(domElement.container); // adds style to block containers for input and error messages
 		}
 		this[validField] = false;
-	}
+	};
 
 	// Method to hide the error message
 	ValidationForm.prototype.hideErrorMessage = function(domElement, validField) {
 		domElement.errorBlock.style.display = 'none';
 		this.deleteDangerStyle(domElement.container); // remove the style from the block-container for input and error messages
 		this[validField] = true;
-	}
+	};
 
 	// Method to display the error message styles
 	ValidationForm.prototype.dangerStyle = function(element) {
 		element.className += ' has-error';
-	}
+	};
 
 	// Method to hide the error message styles
 	ValidationForm.prototype.deleteDangerStyle = function(element) {
 		element.className = element.className.replace('has-error', '').trim();
-	}
+	};
 
 	// Method for checking the correctness of filling the form fields
 	ValidationForm.prototype.buttonValidation = function() {
@@ -194,7 +205,7 @@
 		} else {
 			this.buttonInput.element.disabled = true;
 		}
-	}
+	};
 
 	// Method to display a message with the error form filling
 	ValidationForm.prototype.buttonErrorShow = function() {
@@ -203,7 +214,7 @@
 			errorMessage = this.buttonInput.messages.required;
 			this.showErrorMessage(this.buttonInput, errorMessage);
 		}
-	}
+	};
 
 	// Method to hide a message with the error form filling
 	ValidationForm.prototype.buttonErrorHide = function(event) {
@@ -212,13 +223,14 @@
 			errorMessage = this.buttonInput.messages.required;
 			this.hideErrorMessage(this.buttonInput, errorMessage);
 		}
-	}
+	};
 
 	// Bind event Handlers
 	ValidationForm.prototype.bindEventsHandlers = function() {
 
 		this.emailInput.element.addEventListener('keyup', this.emailValidation.bind(this), false);
 		this.emailInput.element.addEventListener('input', this.emailValidation.bind(this), false);
+		this.emailInput.element.addEventListener('blur', this.emailServerValidation.bind(this), false);
 
 		this.passwordInput.element.addEventListener('keyup', this.passwordValidation.bind(this), false);
 		this.passwordInput.element.addEventListener('input', this.passwordValidation.bind(this), false);
@@ -230,7 +242,7 @@
 
 		this.buttonInput.container.addEventListener('mouseover', this.buttonErrorShow.bind(this), false);
 		this.buttonInput.container.addEventListener('mouseout', this.buttonErrorHide.bind(this), false);
-	}
+	};
 
 	var validForm = new ValidationForm();
-}())
+}());
